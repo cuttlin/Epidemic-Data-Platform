@@ -13,3 +13,6 @@ def index(request):
 def service(request):
     City.objects.create(name='999',size='999')
     return render(request,'service.html')
+
+def home(request):
+    return render(request,'home.html')

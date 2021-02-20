@@ -2812,6 +2812,10 @@ ul.doughnut-legend li span {
     border-color: #d2245c;
 }
 
+.panel-black{
+	border-color: #0c0c0c;
+}
+
 .panel-default > .panel-heading {
     color: #333;
     background-color: #F4F8FB;
@@ -2849,6 +2853,10 @@ ul.doughnut-legend li span {
 
 .panel-inverse > .panel-heading {
   background-color: #12AFCB;
+}
+
+.panel-black > .panel-heading {
+  background-color: #0c0c0c;
 }
 
 .panel.panel-border{
