@@ -1,7 +1,8 @@
 from django.shortcuts import render,HttpResponse
-
+from django.db.models import Max
 # Create your views here.
-from . models import City
+from .models import City, Overviewchina
+
 
 def hello(request):
     context = {}
@@ -10,9 +11,12 @@ def hello(request):
 
 def index(request):
     return render(request,'index.html')
+
 def service(request):
-    City.objects.create(name='999',size='999')
+    #City.objects.create(name='999',size='999')
     return render(request,'service.html')
 
 def home(request):
+    overviewchina = Overviewchina.objects.aggregate(Max('timestamp'))
+    print(overviewchina)
     return render(request,'home.html')

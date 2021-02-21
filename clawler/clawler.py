@@ -38,7 +38,7 @@ class clawler:
 
     # 存储全国累计
     def insertOverviewChina(self,data):
-        data['timestamp'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        data['timestamp'] = int(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
         self.db.insert(collection='overviewchina',data = data)
 
 if __name__ == '__main__':
