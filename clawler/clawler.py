@@ -26,7 +26,7 @@ class clawler:
         #print(d['leiji'][0])
         #dt['timestamp'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         # 全国累计
-        self.insertOverviewChina(data=dic_alldata['leiji'])
+        self.insertLeiji(data=dic_alldata['leiji'])
         # print(d)
         # print(d['borderImgUrl'])
         # print(d['customization']['data']['name'])
@@ -37,9 +37,9 @@ class clawler:
         #print(data.)
 
     # 存储全国累计
-    def insertOverviewChina(self,data):
+    def insertLeiji(self,data):
         data['timestamp'] = int(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
-        self.db.insert(collection='overviewchina',data = data)
+        self.db.insert(collection='leiji',data = data)
 
 if __name__ == '__main__':
     clawler = clawler()

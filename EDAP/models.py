@@ -6,7 +6,7 @@ class City(mongoengine.Document):
     size = mongoengine.StringField(max_length=32)
 
 
-class Overviewchina(mongoengine.Document):
+class Leiji(mongoengine.Document):
     dataList = mongoengine.DictField()
     timestamp = mongoengine.IntField()
 

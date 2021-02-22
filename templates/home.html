@@ -384,8 +384,13 @@
                                 <h3 class="panel-title">现存确诊</h3>
                             </div>
                             <div class="panel-body">
-                                <h1 style="display: inline;margin-left: 30px;margin-right: 150px;"><b>806</b></h1>
-                                昨日 -50
+                                <h1 style="display: inline;margin-left: 30px;margin-right: 150px;"><b>{{ leiji.dataList.0.quezhen_xianyou }}</b></h1>
+                                <div style="display: inline;float: right;">昨日
+                                    {% if context.quezhen_xianyou_add >= 0  %}
+                                        +
+                                    {% endif %}
+                                    {{ context.quezhen_xianyou_add }}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -399,7 +404,7 @@
                             </div>
                             <div class="panel-body">
                                 <h1 style="display: inline;margin-left: 30px;margin-right: 150px;"><b>331</b></h1>
-                                昨日 +13
+                                <div style="display: inline;float: right;">昨日 +8</div>
                             </div>
                         </div>
                     </div>
@@ -411,7 +416,7 @@
                             </div>
                             <div class="panel-body">
                                 <h1 style="display: inline;margin-left: 30px;margin-right: 150px;"><b>4921</b></h1>
-                                昨日 -50
+                                <div style="display: inline;float: right;">昨日 +8</div>
                             </div>
                         </div>
                     </div>
@@ -427,8 +432,8 @@
                                 <h3 class="panel-title">累计确诊</h3>
                             </div>
                             <div class="panel-body">
-                                <h1 style="display: inline;margin-left: 30px;"><b>101646</b></h1>
-                                <div style="display: inline;float: right;">昨日 +8</div>
+                                <h1 style="display: inline;margin-left: 30px;"><b>{{ leiji.dataList.0.quezhen }}</b></h1>
+                                <div style="display: inline;float: right;">昨日 +{{ leiji.dataList.0.quezhen_add }}</div>
                             </div>
                         </div>
                     </div>
@@ -441,8 +446,8 @@
                                 <h3 class="panel-title">累计治愈</h3>
                             </div>
                             <div class="panel-body">
-                                <h1 style="display: inline;margin-left: 30px;margin-right: 150px;"><b>95998</b></h1>
-                                昨日 -50
+                                <h1 style="display: inline;margin-left: 30px;margin-right: 150px;"><b>{{ leiji.dataList.0.zhiyu }}</b></h1>
+                                <div style="display: inline;float: right;">昨日 +{{ leiji.dataList.0.zhiyu_add }}</div>
                             </div>
                         </div>
                     </div>
@@ -455,8 +460,8 @@
                                 <h3 class="panel-title">累计死亡</h3>
                             </div>
                             <div class="panel-body">
-                                <h1 style="display: inline;margin-left: 30px;margin-right: 150px;"><b>4842</b></h1>
-                                昨日 -50
+                                <h1 style="display: inline;margin-left: 30px;margin-right: 150px;"><b>{{ leiji.dataList.0.siwang }}</b></h1>
+                                <div style="display: inline;float: right;">昨日 +{{ leiji.dataList.0.siwang_add }}</div>
                             </div>
                         </div>
                     </div>
