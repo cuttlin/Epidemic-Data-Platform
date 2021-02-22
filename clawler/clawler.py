@@ -25,8 +25,12 @@ class clawler:
         #print(dt[0])
         #print(d['leiji'][0])
         #dt['timestamp'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+
         # 全国累计
-        self.insertLeiji(data=dic_alldata['leiji'])
+        #self.insertLeiji(data=dic_alldata['leiji'])
+        print(dic_alldata['yiqing_v2']['dataList'][15])
+
         # print(d)
         # print(d['borderImgUrl'])
         # print(d['customization']['data']['name'])
