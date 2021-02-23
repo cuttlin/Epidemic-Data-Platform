@@ -13,3 +13,7 @@ class Leijitwomonth(mongoengine.Document):
 class Leiji(mongoengine.Document):
     dataList = mongoengine.DictField()
     timestamp = mongoengine.IntField()
+
+class Yiqingv2(mongoengine.Document):
+    dataList = mongoengine.DictField()
+    timestamp = mongoengine.IntField()

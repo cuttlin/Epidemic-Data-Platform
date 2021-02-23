@@ -1,7 +1,7 @@
 from django.shortcuts import render,HttpResponse
 from django.db.models import Max
 # Create your views here.
-from .models import City, Leiji
+from .models import City, Leiji, Yiqingv2
 
 
 def hello(request):
@@ -19,5 +19,7 @@ def service(request):
 def home(request):
     leiji = Leiji.objects.order_by('-timestamp')[0]
     context = {}
-    #context['quezhen_xianyou_add'] = int(leiji.dataList[0]['quezhen_xianyou'])-int(leiji.dataList[1]['quezhen_xianyou'])
-    return render(request,'home.html',{'leiji':leiji,'context':context})
+    yiqingv2 = Yiqingv2.objects.order_by('-timestamp')[0]
+    dl = yiqingv2.dataList
+    print(type(dl))
+    return render(request,'home.html',{'leiji':leiji,'dl':dl})
