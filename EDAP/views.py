@@ -19,5 +19,5 @@ def service(request):
 def home(request):
     leiji = Leiji.objects.order_by('-timestamp')[0]
     context = {}
-    context['quezhen_xianyou_add'] = int(leiji.dataList[0]['quezhen_xianyou'])-int(leiji.dataList[1]['quezhen_xianyou'])
+    #context['quezhen_xianyou_add'] = int(leiji.dataList[0]['quezhen_xianyou'])-int(leiji.dataList[1]['quezhen_xianyou'])
     return render(request,'home.html',{'leiji':leiji,'context':context})

@@ -6,8 +6,10 @@ class City(mongoengine.Document):
     size = mongoengine.StringField(max_length=32)
 
 
-class Leiji(mongoengine.Document):
+class Leijitwomonth(mongoengine.Document):
     dataList = mongoengine.DictField()
     timestamp = mongoengine.IntField()
 
-    #def __init__(self):
+class Leiji(mongoengine.Document):
+    dataList = mongoengine.DictField()
+    timestamp = mongoengine.IntField()

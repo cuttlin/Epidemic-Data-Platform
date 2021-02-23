@@ -28,7 +28,7 @@ class clawler:
 
 
         # 全国累计
-        #self.insertLeiji(data=dic_alldata['leiji'])
+        self.insertLeiji(leijitwomonthdata=dic_alldata['leiji'],leijidata=dic_alldata['yiqing_v2']['dataList'][15])
         print(dic_alldata['yiqing_v2']['dataList'][15])
 
         # print(d)
@@ -41,9 +41,12 @@ class clawler:
         #print(data.)
 
     # 存储全国累计
-    def insertLeiji(self,data):
-        data['timestamp'] = int(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
-        self.db.insert(collection='leiji',data = data)
+    def insertLeiji(self,leijitwomonthdata,leijidata):
+        timestamp = int(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
+        leijitwomonthdata['timestamp'] = timestamp
+        self.db.insert(collection='leijitwomonth',data = leijitwomonthdata)
+        leiji = {'dataList':leijidata,'timestamp':timestamp}
+        self.db.insert(collection='leiji',data = leiji)
 
 if __name__ == '__main__':
     clawler = clawler()
