@@ -21,5 +21,7 @@ def home(request):
     context = {}
     yiqingv2 = Yiqingv2.objects.order_by('-timestamp')[0]
     dl = yiqingv2.dataList
-    print(type(dl))
     return render(request,'home.html',{'leiji':leiji,'dl':dl})
+
+def world(request):
+    return render(request,'world.html')

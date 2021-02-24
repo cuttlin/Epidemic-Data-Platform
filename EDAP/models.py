@@ -17,3 +17,8 @@ class Leiji(mongoengine.Document):
 class Yiqingv2(mongoengine.Document):
     dataList = mongoengine.DictField()
     timestamp = mongoengine.IntField()
+
+class Leijiworld(mongoengine.Document):
+    timestamp = mongoengine.IntField()
+    leijidata = mongoengine.DictField()
+    countrydata = mongoengine.DictField()

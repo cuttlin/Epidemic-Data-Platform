@@ -19,8 +19,8 @@ class clawler:
         alldata = re.search(r'{"borderImgUrl":"",".*(?=;)',strhtml.text)
 
         dic_alldata = json.loads(str(alldata.group()))
-        print(type(dic_alldata))
-        print(dic_alldata)
+        # print(type(dic_alldata))
+        # print(dic_alldata)
         #dt = lj['dataList']
         #print(dt[0])
         #print(d['leiji'][0])
@@ -28,11 +28,13 @@ class clawler:
 
 
         # 全国累计
-        #self.insertLeiji(leijitwomonthdata=dic_alldata['leiji'],leijidata=dic_alldata['yiqing_v2']['dataList'][15])
+        self.insertLeiji(leijitwomonthdata=dic_alldata['leiji'],leijidata=dic_alldata['yiqing_v2']['dataList'][15])
 
         # 全国省市实时情况
-        print(dic_alldata['yiqing_v2'])
         self.insertYiqingv2(data=dic_alldata['yiqing_v2'])
+
+        # 全球累计实时情况
+        self.insertWorlddata(leijidata=dic_alldata['leiji']['dataList'],countrydata=dic_alldata['yiqing_v2']['dataList'][29])
 
         # print(d)
         # print(d['borderImgUrl'])
@@ -57,6 +59,12 @@ class clawler:
         timestamp = int(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
         data['timestamp'] = timestamp
         self.db.insert(collection='yiqingv2',data=data)
+
+    # 存储全球累计实时情况
+    def insertWorlddata(self,leijidata,countrydata):
+        timestamp = int(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
+        data = {'timestamp':timestamp,'leijidata':leijidata,'countrydata':countrydata}
+        self.db.insert(collection='leijiworld',data=data)
 
 if __name__ == '__main__':
     clawler = clawler()
