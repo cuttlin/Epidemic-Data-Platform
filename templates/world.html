@@ -358,6 +358,73 @@
                  </div>
                   <!--End Page Title-->
 
+
+               <!--Start row-->
+                   <div class="row">
+                        <div class="col-md-3">
+                        <div class="panel panel-color panel-purple">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">新增病例</h3>
+                            </div>
+                            <div class="panel-body">
+                                <h1 style="display: inline;margin-left: 30px;margin-right: 150px;"><b>{{leijiworld.leijidata.0.quezhen_add_guowai}}</b></h1>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                       <div class="col-md-3">
+                        <div class="panel panel-color panel-pink">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">累计确诊</h3>
+                            </div>
+                            <div class="panel-body">
+                                <h1 style="display: inline;margin-left: 30px;margin-right: 150px;"><b>{{leijiworld.leijidata.0.quezhen_guowai}}</b></h1>
+
+                            </div>
+                        </div>
+                    </div>
+
+                       <div class="col-md-3">
+                        <div class="panel panel-color panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">累计治愈</h3>
+                            </div>
+                            <div class="panel-body">
+                                <h1 style="display: inline;margin-left: 30px;margin-right: 150px;"><b>{{leijiworld.leijidata.0.zhiyu}}</b></h1>
+
+                            </div>
+                        </div>
+                    </div>
+
+                       <div class="col-md-3">
+                        <div class="panel panel-color panel-black" style="border-color: #0c0c0c;">
+                            <div class="panel-heading" style="background-color: #0c0c0c">
+                                <h3 class="panel-title">累计死亡</h3>
+                            </div>
+                            <div class="panel-body">
+                                <h1 style="display: inline;margin-left: 30px;margin-right: 150px;"><b>{{leijiworld.leijidata.0.siwang_guowai}}</b></h1>
+                            </div>
+                        </div>
+                    </div>
+
+                   </div>
+                   <!--End row-->
+
+                <!-- start row-->
+                <div class="col-md-12">
+                        <div class="white-box">
+                          <h2 class="header-title"> 世界疫情地图 </h2>
+                            <div id="world-map-markers">
+                                <div id="myEcharts" style="width:1200px;height:800px;border: solid 1px red;margin: 0 auto;"></div>
+                            </div>
+
+                        </div>
+                       </div>
+                <!-- end row -->
+
                <!--Start row-->
                <div class="row">
                    <div class="col-md-6">
@@ -747,6 +814,89 @@
     <script src="/static/assets/js/jquery.nicescroll.js"></script>
     <script src="/static/assets/js/functions.js"></script>
     <!-- End core plugin -->
+
+    <!-- 引入 echarts.js -->
+  <script src="/static/assets/js/echarts.js"></script>
+  <!--引入中国的地图数据js文件，引入后会自动注册地图名字和数据-->
+  <script src="/static/assets/js/world.js"></script>
+    <script>
+    //初始化echarts实例
+    var myChart = echarts.init(document.getElementById('myEcharts'));
+    // 指定图表的配置项和数据
+    option = {
+      title: {
+        text: '世界疫情地图',
+        left: 'center'
+      },
+      tooltip: {
+        trigger: 'item'
+      },
+      legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: ['中国疫情图']
+      },
+      visualMap: {
+        type: 'piecewise',
+        pieces: [
+          { min: 100000, max: 100000000000, label: '大于等于100000人', color: '#372a28' },
+          { min: 10000, max: 99999, label: '确诊50000-99999人', color: '#4e160f' },
+          { min: 5000, max: 9999, label: '确诊10000-49999人', color: '#974236' },
+          { min: 1000, max: 4999, label: '确诊1000-9999人', color: '#ee7263' },
+          { min: 1, max: 999, label: '确诊1-999人', color: '#f5bba7' },
+        ],
+        color: ['#E0022B', '#E09107', '#A3E00B']
+      },
+      toolbox: {
+        show: true,
+        orient: 'vertical',
+        left: 'right',
+        top: 'center',
+        feature: {
+          mark: { show: true },
+          dataView: { show: true, readOnly: false },
+          restore: { show: true },
+          saveAsImage: { show: true }
+        }
+      },
+      roamController: {
+        show: true,
+        left: 'right',
+        mapTypeControl: {
+          'china': true
+        }
+      },
+      series: [
+        {
+          name: '确诊数',
+          type: 'map',
+          mapType: 'world',
+          roam: false,
+          label: {
+            show: true,
+            color: 'rgb(249, 249, 249)'
+          },
+          data: [
+              {% for item in leijiworld.countrydata.child %}
+                  {
+                      name:'{{ item.name2 }}',
+                      value:'{{ item.quezhen_xianyou }}'
+                  },
+              {% endfor %}
+              {
+                  name:'China',
+                  value:'{{ leijiworld.leijidata.0.quezhen_xianyou }}'
+              }
+
+          ]
+        }
+      ]
+    };
+
+    //使用指定的配置项和数据显示图表
+    myChart.setOption(option);
+  </script>
+
 
 </body>
 
