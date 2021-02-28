@@ -24,6 +24,9 @@ def home(request):
     dl = yiqingv2.dataList
     return render(request,'home.html',{'leiji':leiji,'dl':dl,'lj2':leijitwomonth})
 
+def city(request):
+    return  render(request,'city.html')
+
 def world(request):
     leijiworld = Leijiworld.objects.order_by('-timestamp')[0]
     for item in leijiworld.countrydata['child']:

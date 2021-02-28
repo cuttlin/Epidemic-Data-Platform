@@ -70,8 +70,8 @@
 
                 <li class="menu-list nav-active"><a href="#"><i class="icon-grid"></i> <span>国内趋势</span></a>
                     <ul class="sub-menu-list">
-                       <li class="active"><a href="/home"> 疫情地图 </a></li>
-                        <li><a href="table-responsive.html">Responsive Table</a></li>
+                       <li class="active"><a href="/home"> 数据总览 </a></li>
+                        <li><a href="/city"> 省市详情 </a></li>
                         <li><a href="table-datatable.html">Data Tables</a></li>
                     </ul>
                 </li>
@@ -485,7 +485,9 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-
+                            <div class="white-box">
+                            <div id="container2" style="height: 100%;height: 500px;"></div>
+                            </div>
                         </div>
                     </div>
 
@@ -696,13 +698,13 @@ var option;
 
 option = {
     title: {
-        text: '折线图堆叠'
+        text: '全国数据总量'
     },
     tooltip: {
         trigger: 'axis'
     },
     legend: {
-        data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
+        data: ['累计确诊','确诊现有', '累计治愈', '累计死亡']
     },
     grid: {
         left: '3%',
@@ -719,7 +721,7 @@ option = {
         type: 'category',
         boundaryGap: false,
         data:
-            [{% for item in lj2.dataList %}
+            [{% for item in lj2.dataList reversed%}
             '{{ item.date }}',
             {% endfor %}'']
     },
@@ -728,34 +730,128 @@ option = {
     },
     series: [
         {
-            name: '邮件营销',
+            name: '累计确诊',
             type: 'line',
-            stack: '总量',
-            data: [120, 132, 101, 134, 90, 230, 210]
+            stack: '累计确诊',
+            data: [
+                {% for item in lj2.dataList reversed%}
+                    {{ item.quezhen }},
+                {% endfor %}, ]
         },
         {
-            name: '联盟广告',
+            name: '确诊现有',
             type: 'line',
-            stack: '总量',
-            data: [220, 182, 191, 234, 290, 330, 310]
+            stack: '确诊现有',
+            data: [
+                {% for item in lj2.dataList reversed%}
+                    {{ item.quezhen_xianyou }},
+                {% endfor %}, ]
         },
         {
-            name: '视频广告',
+            name: '累计治愈',
             type: 'line',
-            stack: '总量',
-            data: [150, 232, 201, 154, 190, 330, 410]
+            stack: '累计治愈',
+            data: [
+                {% for item in lj2.dataList reversed%}
+                    {{ item.zhiyu }},
+                {% endfor %}, ]
         },
         {
-            name: '直接访问',
+            name: '累计死亡',
             type: 'line',
-            stack: '总量',
-            data: [320, 332, 301, 334, 390, 330, 320]
+            stack: '累计死亡',
+            data: [
+                {% for item in lj2.dataList reversed%}
+                    {{ item.siwang }},
+                {% endfor %}, ]
+        }
+    ]
+};
+
+if (option && typeof option === 'object') {
+    myChart.setOption(option);
+}
+
+        </script>
+
+
+    <script type="text/javascript">
+var dom = document.getElementById("container2");
+var myChart = echarts.init(dom);
+var app = {};
+
+var option;
+
+
+
+option = {
+    title: {
+        text: '全国每日数据'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: ['确诊数', '治愈数', '死亡数','疑似数']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data:
+            [{% for item in lj2.dataList reversed%}
+            '{{ item.date }}',
+            {% endfor %}'']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name: '确诊数',
+            type: 'line',
+            stack: '确诊数',
+            data: [
+                {% for item in lj2.dataList reversed%}
+                    {{ item.quezhen_add }},
+                {% endfor %}, ]
         },
         {
-            name: '搜索引擎',
+            name: '治愈数',
             type: 'line',
-            stack: '总量',
-            data: [820, 932, 901, 934, 1290, 1330, 1320]
+            stack: '治愈数',
+            data: [
+                {% for item in lj2.dataList reversed%}
+                    {{ item.zhiyu_add }},
+                {% endfor %}, ]
+        },
+        {
+            name: '死亡数',
+            type: 'line',
+            stack: '死亡数',
+            data: [
+                {% for item in lj2.dataList reversed%}
+                    {{ item.siwang_add }},
+                {% endfor %}, ]
+        },
+        {
+            name: '疑似数',
+            type: 'line',
+            stack: '疑似数',
+            data: [
+                {% for item in lj2.dataList reversed%}
+                    {{ item.yisi }},
+                {% endfor %}, ]
         }
     ]
 };
