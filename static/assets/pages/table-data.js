@@ -50,7 +50,10 @@ $(document).ready(function() {
     
     $('#example').dataTable();
     $('#example-editable').DataTable();
-    
+
+    $('#ep1').dataTable();
+    $('#ep1-editable').DataTable();
+
     var table = $('#example2').DataTable({
         "columnDefs": [
             { "visible": false, "targets": 2 }

@@ -25,7 +25,8 @@ def home(request):
     return render(request,'home.html',{'leiji':leiji,'dl':dl,'lj2':leijitwomonth})
 
 def city(request):
-    return  render(request,'city.html')
+    yiqingv2 = Yiqingv2.objects.order_by('-timestamp')[0]
+    return  render(request,'city.html',{'city':yiqingv2})
 
 def world(request):
     leijiworld = Leijiworld.objects.order_by('-timestamp')[0]

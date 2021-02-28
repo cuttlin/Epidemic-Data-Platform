@@ -19,12 +19,7 @@ class clawler:
         alldata = re.search(r'{"borderImgUrl":"",".*(?=;)',strhtml.text)
 
         dic_alldata = json.loads(str(alldata.group()))
-        # print(type(dic_alldata))
-        # print(dic_alldata)
-        #dt = lj['dataList']
-        #print(dt[0])
-        #print(d['leiji'][0])
-        #dt['timestamp'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
 
 
         # 全国累计
@@ -36,14 +31,7 @@ class clawler:
         # 全球累计实时情况
         self.insertWorlddata(leijidata=dic_alldata['leiji']['dataList'],countrydata=dic_alldata['yiqing_v2']['dataList'][29])
 
-        # print(d)
-        # print(d['borderImgUrl'])
-        # print(d['customization']['data']['name'])
-        #print(type(mes_dict))
-        #print(soup.prettify())
-        #data = soup.select('#root > div > div.data_header_27UAPS09 > div.sum1_1pU-jgIe > div.num1_3n92B7R8 > span:nth-child(2)')
-        #print(strhtml.text)
-        #print(data.)
+
 
 
     # 存储全国累计
@@ -59,6 +47,8 @@ class clawler:
         timestamp = int(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
         data['timestamp'] = timestamp
         self.db.insert(collection='yiqingv2',data=data)
+        city = {'timestamp': timestamp}
+        city['dataList']
 
     # 存储全球累计实时情况
     def insertWorlddata(self,leijidata,countrydata):
