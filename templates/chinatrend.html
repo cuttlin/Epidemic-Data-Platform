@@ -375,8 +375,8 @@
 
                    <div class="col-md-6">
                        <div class="white-box">
-                           <h2 class="header-title">Row Grouping</h2>
-
+                          <h2  class="header-title">Line Chart</h2 >
+                             <div id="morris3"></div>
                        </div>
                    </div>
                </div>
@@ -405,12 +405,12 @@
     <script src="/static/assets/js/functions.js"></script>
     <!-- End core plugin -->
 
-    <!--Begin Page Level Plugin-->
-	<script src="/static/assets/plugins/morris-chart/morris.js"></script>
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="/static/assets/plugins/morris-chart/morris.js"></script>
+    <script src="/static/assets/plugins/jquery-ui/jquery-ui.min.js"></script>
     <script src="/static/assets/plugins/morris-chart/raphael-min.js"></script>
-    <script src="/static/assets/plugins/jquery-sparkline/jquery.sparkline.min.js"></script>
-    <script src="/static/assets/pages/dashboard.js"></script>
-    <!--End Page Level Plugin-->
+    <script src="/static/assets/pages/morris-custom.js"></script>
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <!-- 引入 echarts.js -->
   <script src="/static/assets/js/echarts.js"></script>
 
@@ -425,7 +425,7 @@ var option;
 
 option = {
     title: {
-        text: '全国疫情预测'
+        text: '湖北疫情预测'
     },
     tooltip: {
         trigger: 'axis'
@@ -447,9 +447,10 @@ option = {
     xAxis: {
         type: 'category',
         boundaryGap: false,
+        position:'bottom',
         data:
-            [{% for item in lj2.dataList reversed%}
-            '{{ item.date }}',
+            [{% for i in phhubei.dataList %}
+            '{{ forloop.counter }}',
             {% endfor %}'']
     },
     yAxis: {
@@ -457,22 +458,22 @@ option = {
     },
     series: [
         {
-            name: '累计确诊',
+            name: '实际',
             type: 'line',
-            stack: '累计确诊',
+            stack: '实际',
             data: [
-                {% for item in lj2.dataList reversed%}
-                    {{ item.quezhen }},
+                {% for item in phhubei.dataList%}
+                    {{ item.confirm }},
                 {% endfor %}, ]
         },
         {
-            name: '确诊现有',
+            name: '预测',
             type: 'line',
-            stack: '确诊现有',
+            stack: '预测',
             data: [
-                {% for item in lj2.dataList reversed%}
-                    {{ item.quezhen_xianyou }},
-                {% endfor %}, ]
+                {% for item in prehubei %}
+                    [{{ item }}],
+                {% endfor %} ]
         }
     ]
 };

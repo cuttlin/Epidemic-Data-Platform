@@ -1,7 +1,8 @@
 from django.shortcuts import render,HttpResponse
 from django.db.models import Max
 # Create your views here.
-from .models import City, Leiji, Yiqingv2, Leijiworld, country_name_map, Leijitwomonth
+from .models import City, Leiji, Yiqingv2, Leijiworld, country_name_map, Leijitwomonth,\
+    Provincehistory,Predict
 
 
 def hello(request):
@@ -29,7 +30,17 @@ def city(request):
     return  render(request,'city.html',{'city':yiqingv2})
 
 def chinatrend(request):
-    return render(request,'chinatrend.html')
+    phhubei = Provincehistory.objects.order_by('-timestamp')[0]
+    daydata = []
+    i = 0
+    for item in phhubei.dataList:
+        i += 1
+        if i > 207 :
+            break
+        daydata.append(item['confirm'])
+
+    prehubei = Predict.logistic(daydata=daydata)
+    return render(request,'chinatrend.html',{'phhubei':phhubei,'prehubei':prehubei})
 
 def world(request):
     leijiworld = Leijiworld.objects.order_by('-timestamp')[0]
