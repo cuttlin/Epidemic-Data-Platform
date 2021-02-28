@@ -1,4 +1,6 @@
 import mongoengine
+import numpy as np
+from scipy.optimize import curve_fit as curve_fit
 # Create your models here.
 
 class City(mongoengine.Document):
@@ -23,6 +25,9 @@ class Leijiworld(mongoengine.Document):
     leijidata = mongoengine.DictField()
     countrydata = mongoengine.DictField()
 
+class Provincehistory(mongoengine.Document):
+    timestamp = mongoengine.IntField()
+    dataList = mongoengine.DictField()
 
 country_name_map = {
     '钻石公主号邮轮': 'Diamond Princess Cruise Ship',
@@ -259,3 +264,32 @@ continent_name_map = {
     '南极洲': 'Antarctica',
     '其他': 'Others'
 }
+
+# 预测类
+class Predict:
+    def logistic(self):
+        # 数据录入——请在这里修改或补充每日病例数，数据太多时用"\"表示换行
+        每日病例数 = [115, 142, 198, 235, 343, 436, 596, 727, 873, 1087, 1330, \
+                 1470, 2091, 2792, 3409, 4043, 4756, 5655, 6280, 7448, 8591]
+
+        天数 = len(每日病例数)  # 自动计算上面输入的数据所对应的天数
+        xdata = [i + 1 for i in range(天数)]  # 横坐标数据，以第几天表示
+        ydata = 每日病例数  # 纵坐标数据，表示每天对应的病例数
+
+        # S型曲线函数公式定义
+        def func(x, k, a, b):
+            return k / (1 + (k / b - 1) * np.exp(-a * x))
+
+        # 非线性最小二乘法拟合
+        popt, pcov = curve_fit(func, xdata, ydata, method='dogbox', \
+                               bounds=([1000., 0.01, 10.], [10000000., 1.0, 1000.]))
+        k = popt[0]
+        a = popt[1]
+        b = popt[2]
+
+        # 计算拟合数据后的数据
+        延长天数 = 1  # 需要预测的天数
+        x = np.linspace(0, len(xdata) + 延长天数)  # 横坐标取值
+        y = func(x, *popt)  # 纵坐标计算值
+        return {'x':x,'y':y}
+

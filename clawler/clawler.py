@@ -11,6 +11,19 @@ class clawler:
     def __init__(self):
         self.db = DB()
 
+
+    # 爬取省市历史数据
+    def clawHistory(self,city):
+        timestamp = int(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
+        url = 'https://api.inews.qq.com/newsqa/v1/query/pubished/daily/list?province='+city
+        strhtml = requests.get(url)
+        soup = BeautifulSoup(strhtml.text, 'lxml')
+
+        dic_alldata = json.loads(str(strhtml.text))
+        provincehistory = {'timestamp':timestamp,'dataList':dic_alldata['data']}
+        self.db.insert(collection='provincehistory', data=provincehistory)
+
+
     def run(self):
         # 爬取的地址
         url = 'https://news.ifeng.com/c/special/7tPlDSzDgVk'
@@ -19,6 +32,7 @@ class clawler:
         alldata = re.search(r'{"borderImgUrl":"",".*(?=;)',strhtml.text)
 
         dic_alldata = json.loads(str(alldata.group()))
+
 
 
 
@@ -58,4 +72,4 @@ class clawler:
 
 if __name__ == '__main__':
     clawler = clawler()
-    clawler.run()
+    clawler.clawHistory(city='湖北')

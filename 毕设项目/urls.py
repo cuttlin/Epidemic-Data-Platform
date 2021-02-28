@@ -25,4 +25,5 @@ urlpatterns = [
     path('home/',views.home),
     path('world/',views.world),
     path('city/',views.city),
+    path('chinatrend/',views.chinatrend),
 ]

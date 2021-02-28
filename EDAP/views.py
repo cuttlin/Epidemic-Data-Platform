@@ -28,6 +28,9 @@ def city(request):
     yiqingv2 = Yiqingv2.objects.order_by('-timestamp')[0]
     return  render(request,'city.html',{'city':yiqingv2})
 
+def chinatrend(request):
+    return render(request,'chinatrend.html')
+
 def world(request):
     leijiworld = Leijiworld.objects.order_by('-timestamp')[0]
     for item in leijiworld.countrydata['child']:
