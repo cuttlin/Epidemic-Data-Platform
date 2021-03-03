@@ -1,6 +1,7 @@
 import mongoengine
 import numpy as np
 from scipy.optimize import curve_fit as curve_fit
+import scipy.integrate as spi
 # Create your models here.
 
 class City(mongoengine.Document):
@@ -27,6 +28,7 @@ class Leijiworld(mongoengine.Document):
 
 class Provincehistory(mongoengine.Document):
     timestamp = mongoengine.IntField()
+    place = mongoengine.StringField()
     dataList = mongoengine.DictField()
 
 country_name_map = {
@@ -267,7 +269,7 @@ continent_name_map = {
 
 # 预测类
 class Predict:
-    def logistic(daydata):
+    def logistic(daydata,prdictday):
         # 数据录入——请在这里修改或补充每日病例数，数据太多时用"\"表示换行
         每日病例数 = daydata#[115, 142, 198, 235, 343, 436, 596, 727, 873, 1087, 1330, \
                  #1470, 2091, 2792, 3409, 4043, 4756, 5655, 6280, 7448, 8591]
@@ -288,7 +290,7 @@ class Predict:
         b = popt[2]
 
         # 计算拟合数据后的数据
-        延长天数 = 200  # 需要预测的天数
+        延长天数 = prdictday  # 需要预测的天数
         x = np.linspace(0, len(xdata) + 延长天数)  # 横坐标取值
         y = func(x, *popt)  # 纵坐标计算值
         li = []
@@ -296,3 +298,51 @@ class Predict:
           li.append(str(x[i])+','+str(y[i]))
         return li
 
+    def seir(self):
+        # N: 区域内总人口                      #
+        # S: 易感者                           #
+        # E: 潜伏者                           #
+        # I: 感染者                           #
+        # R: 康复者                           #
+        # r: 每天接触的人数                    #
+        # r2: 潜伏者每天接触的人数              #
+        # beta1: 感染者传染给易感者的概率, I——>S #
+        # beta2: 潜伏者感染易感者的概率, E——>S   #
+        # sigma: 潜伏者转化为感染者的概率, E——>I #
+        # gama: 康复概率, I——>R                #
+        # T: 传播时间                          #
+        N = 100000  # 湖北省为6000 0000
+        E_0 = 0
+        I_0 = 1
+        R_0 = 0
+        S_0 = N - E_0 - I_0 - R_0
+        beta1 = 0.78735  # 真实数据拟合得出
+        beta2 = 0.15747
+        # r2 * beta2 = 2
+        sigma = 0.1  # 1/14, 潜伏期的倒数
+        gamma = 0.1  # 1/7, 感染期的倒数
+        r = 1  # 政府干预措施决定
+        T = 150
+
+        # ode求解
+        INI = [S_0, E_0, I_0, R_0]
+
+        def SEIR(inivalue, _):
+            X = inivalue
+            Y = np.zeros(4)
+            # S数量
+            Y[0] = - (r * beta1 * X[0] * X[2]) / N - (r * beta2 * X[0] * X[1]) / N
+            # E数量
+            Y[1] = (r * beta1 * X[0] * X[2]) / N + (r * beta2 * X[0] * X[1]) / N - sigma * X[1]
+            # I数量
+            Y[2] = sigma * X[1] - gamma * X[2]
+            # R数量
+            Y[3] = gamma * X[2]
+            return Y
+
+        T_range = np.arange(0, T + 1)
+        Res = spi.odeint(SEIR, INI, T_range)
+        S_t = Res[:, 0]
+        E_t = Res[:, 1]
+        I_t = Res[:, 2]
+        R_t = Res[:, 3]

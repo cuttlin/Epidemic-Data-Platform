@@ -1,5 +1,4 @@
 from django.shortcuts import render,HttpResponse
-from django.db.models import Max
 # Create your views here.
 from .models import City, Leiji, Yiqingv2, Leijiworld, country_name_map, Leijitwomonth,\
     Provincehistory,Predict
@@ -30,17 +29,20 @@ def city(request):
     return  render(request,'city.html',{'city':yiqingv2})
 
 def chinatrend(request):
-    phhubei = Provincehistory.objects.order_by('-timestamp')[0]
+    # 湖北预测
+    phhubei = Provincehistory.objects.filter(place="湖北")().order_by('-timestamp')[0]
     daydata = []
-    i = 0
-    for item in phhubei.dataList:
-        i += 1
-        if i > 207 :
-            break
-        daydata.append(item['confirm'])
-
-    prehubei = Predict.logistic(daydata=daydata)
-    return render(request,'chinatrend.html',{'phhubei':phhubei,'prehubei':prehubei})
+    for i in range(200):
+        daydata.append(phhubei.dataList[i]['confirm'])
+    prehubei = Predict.logistic(daydata=daydata,prdictday=207)
+    # 河北预测
+    phhebei = Provincehistory.objects.filter(place="河北")().order_by('-timestamp')[0]
+    daydata2 = []
+    for i in range(338,378):
+        daydata2.append(phhebei.dataList[i]['confirm'])
+    prehebei = Predict.logistic(daydata=daydata2, prdictday=20)
+    return render(request,'chinatrend.html',{'phhubei':phhubei,'prehubei':prehubei,\
+                                             'phhebei':phhebei,'prehebei':prehebei,'looptimes':range(0,59)})
 
 def world(request):
     leijiworld = Leijiworld.objects.order_by('-timestamp')[0]

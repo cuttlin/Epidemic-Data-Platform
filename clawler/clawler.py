@@ -13,14 +13,14 @@ class clawler:
 
 
     # 爬取省市历史数据
-    def clawHistory(self,city):
+    def clawHistory(self,place):
         timestamp = int(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
-        url = 'https://api.inews.qq.com/newsqa/v1/query/pubished/daily/list?province='+city
+        url = 'https://api.inews.qq.com/newsqa/v1/query/pubished/daily/list?province='+place
         strhtml = requests.get(url)
         soup = BeautifulSoup(strhtml.text, 'lxml')
 
         dic_alldata = json.loads(str(strhtml.text))
-        provincehistory = {'timestamp':timestamp,'dataList':dic_alldata['data']}
+        provincehistory = {'timestamp':timestamp,'place':place,'dataList':dic_alldata['data']}
         self.db.insert(collection='provincehistory', data=provincehistory)
 
 
@@ -62,7 +62,7 @@ class clawler:
         data['timestamp'] = timestamp
         self.db.insert(collection='yiqingv2',data=data)
         city = {'timestamp': timestamp}
-        city['dataList']
+        #city['dataList']
 
     # 存储全球累计实时情况
     def insertWorlddata(self,leijidata,countrydata):
@@ -72,4 +72,6 @@ class clawler:
 
 if __name__ == '__main__':
     clawler = clawler()
-    clawler.clawHistory(city='湖北')
+    clawler.run()
+    clawler.clawHistory(place='河北')
+    clawler.clawHistory(place='湖北')
