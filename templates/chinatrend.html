@@ -380,8 +380,22 @@
                    </div>
                </div>
                <!--End row-->
+                <!--Start row-->
+            <div class="row">
+                <div class="col-md-6">
+                       <div class="white-box">
+                            <div id="container2" style="height: 100%;height: 500px;"></div>
 
+                       </div>
+                   </div>
 
+                   <div class="col-md-6">
+                       <div class="white-box">
+                          <div id="container3" style="height: 100%;height: 500px;"></div>
+                       </div>
+                   </div>
+            </div>
+            <!--End row-->
 			    </div>
         <!-- End Wrapper-->
 
@@ -420,10 +434,16 @@ var myChart = echarts.init(dom);
 var dom1 = document.getElementById("container1");
 var myChart1 = echarts.init(dom1);
 
+var dom2 = document.getElementById("container2");
+var myChart2 = echarts.init(dom2);
+
+var dom3 = document.getElementById("container3");
+var myChart3 = echarts.init(dom3);
+
 
 var app = {};
 
-var option,option1;
+var option,option1,option2,option3;
 
 
 
@@ -539,6 +559,167 @@ option1 = {
     ]
 };
 
+option2 = {
+    title: {
+        text: '湖北SEIR模型'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: ['易感者','潜伏者','感染者','康复者']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        position:'bottom',
+        data:
+            [{% for i in looptimes1 %}
+            '{{ forloop.counter }}',
+            {% endfor %}'']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name: '易感者',
+            type: 'line',
+            stack: '易感者',
+            data: [
+                {% for item in seirhubei.S_t%}
+
+                    {{ item }},
+
+                {% endfor %}, ]
+        },
+        {
+            name: '潜伏者',
+            type: 'line',
+            stack: '潜伏者',
+            data: [
+                {% for item in seirhubei.E_t%}
+
+                    {{ item }},
+
+                {% endfor %}, ]
+        },
+        {
+            name: '感染者',
+            type: 'line',
+            stack: '感染者',
+            data: [
+                {% for item in seirhubei.I_t%}
+
+                    {{ item }},
+
+                {% endfor %}, ]
+        },
+        {
+            name: '康复者',
+            type: 'line',
+            stack: '康复者',
+            data: [
+                {% for item in seirhubei.R_t%}
+
+                    {{ item }},
+
+                {% endfor %}, ]
+        }
+    ]
+};
+
+option3 = {
+    title: {
+        text: '河北SEIR模型'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: ['易感者','潜伏者','感染者','康复者']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        position:'bottom',
+        data:
+            [{% for i in looptimes1 %}
+            '{{ forloop.counter }}',
+            {% endfor %}'']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name: '易感者',
+            type: 'line',
+            stack: '易感者',
+            data: [
+                {% for item in seirhebei.S_t%}
+
+                    {{ item }},
+
+                {% endfor %}, ]
+        },
+        {
+            name: '潜伏者',
+            type: 'line',
+            stack: '潜伏者',
+            data: [
+                {% for item in seirhebei.E_t%}
+
+                    {{ item }},
+
+                {% endfor %}, ]
+        },
+        {
+            name: '感染者',
+            type: 'line',
+            stack: '感染者',
+            data: [
+                {% for item in seirhebei.I_t%}
+
+                    {{ item }},
+
+                {% endfor %}, ]
+        },
+        {
+            name: '康复者',
+            type: 'line',
+            stack: '康复者',
+            data: [
+                {% for item in seirhebei.R_t%}
+
+                    {{ item }},
+
+                {% endfor %}, ]
+        }
+    ]
+};
 
 
 if (option && typeof option === 'object') {
@@ -546,6 +727,14 @@ if (option && typeof option === 'object') {
 }
 if (option1 && typeof option1 === 'object') {
     myChart1.setOption(option1);
+}
+
+if (option2 && typeof option2 === 'object') {
+    myChart2.setOption(option2);
+}
+
+if (option3 && typeof option3 === 'object') {
+    myChart3.setOption(option3);
 }
 
         </script>

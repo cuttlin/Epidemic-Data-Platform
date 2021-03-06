@@ -41,8 +41,14 @@ def chinatrend(request):
     for i in range(338,378):
         daydata2.append(phhebei.dataList[i]['confirm'])
     prehebei = Predict.logistic(daydata=daydata2, prdictday=20)
+    # 湖北SEIR
+    seirhubei = Predict.seir(people=60000000)
+    # 河北SEIR
+    seirhebei = Predict.seir(people=76000000)
     return render(request,'chinatrend.html',{'phhubei':phhubei,'prehubei':prehubei,\
-                                             'phhebei':phhebei,'prehebei':prehebei,'looptimes':range(0,59)})
+                                             'phhebei':phhebei,'prehebei':prehebei,'looptimes':range(0,59),\
+                                             'seirhubei':seirhubei,'seirhebei':seirhebei,'looptimes1':range(0,160),
+                                             })
 
 def world(request):
     leijiworld = Leijiworld.objects.order_by('-timestamp')[0]

@@ -298,7 +298,7 @@ class Predict:
           li.append(str(x[i])+','+str(y[i]))
         return li
 
-    def seir(self):
+    def seir(people):
         # N: 区域内总人口                      #
         # S: 易感者                           #
         # E: 潜伏者                           #
@@ -311,7 +311,7 @@ class Predict:
         # sigma: 潜伏者转化为感染者的概率, E——>I #
         # gama: 康复概率, I——>R                #
         # T: 传播时间                          #
-        N = 100000  # 湖北省为6000 0000
+        N = people#100000  # 湖北省为6000 0000
         E_0 = 0
         I_0 = 1
         R_0 = 0
@@ -346,3 +346,4 @@ class Predict:
         E_t = Res[:, 1]
         I_t = Res[:, 2]
         R_t = Res[:, 3]
+        return {'S_t':S_t,'E_t':E_t,'I_t':I_t,'R_t':R_t}
