@@ -60,3 +60,7 @@ def world(request):
             print()
 
     return render(request,'world.html',{'leijiworld':leijiworld})
+
+# 实时热点
+def realtime(request):
+    return render(request,'realtime.html')

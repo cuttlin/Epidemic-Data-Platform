@@ -11,6 +11,14 @@ class clawler:
     def __init__(self):
         self.db = DB()
 
+    # 爬取实时播报
+    def clawRealtime(self):
+        url = 'http://auto.sohu.com/sptopic/20-182-kb-d0c/2020pneumoniaReatime.html'
+        strhtml = requests.get(url)
+        soup = BeautifulSoup(strhtml.text, 'lxml')
+        alldata = re.search(r'{"title":"实时播报",".*(?=;)', strhtml.text)
+        dic_alldata = json.loads(str(alldata.group()))
+        print(dic_alldata)
 
     # 爬取省市历史数据
     def clawHistory(self,place):
@@ -34,7 +42,7 @@ class clawler:
         dic_alldata = json.loads(str(alldata.group()))
 
 
-
+        #print(dic_alldata)
 
         # 全国累计
         self.insertLeiji(leijitwomonthdata=dic_alldata['leiji'],leijidata=dic_alldata['yiqing_v2']['dataList'][15])
@@ -75,3 +83,4 @@ if __name__ == '__main__':
     clawler.run()
     clawler.clawHistory(place='河北')
     clawler.clawHistory(place='湖北')
+    clawler.clawRealtime()

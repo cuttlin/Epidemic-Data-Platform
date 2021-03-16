@@ -26,4 +26,5 @@ urlpatterns = [
     path('world/',views.world),
     path('city/',views.city),
     path('chinatrend/',views.chinatrend),
+    path('realtime/',views.realtime),
 ]
