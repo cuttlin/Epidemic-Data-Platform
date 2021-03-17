@@ -13,12 +13,14 @@ class clawler:
 
     # 爬取实时播报
     def clawRealtime(self):
+        timestamp = int(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
         url = 'http://auto.sohu.com/sptopic/20-182-kb-d0c/2020pneumoniaReatime.html'
         strhtml = requests.get(url)
         soup = BeautifulSoup(strhtml.text, 'lxml')
         alldata = re.search(r'{"title":"实时播报",".*(?=;)', strhtml.text)
         dic_alldata = json.loads(str(alldata.group()))
-        print(dic_alldata)
+        data = {'timestamp': timestamp, 'data': dic_alldata}
+        self.db.insert(collection='realtimenews', data=data)
 
     # 爬取省市历史数据
     def clawHistory(self,place):

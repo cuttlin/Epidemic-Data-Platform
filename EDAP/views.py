@@ -1,8 +1,8 @@
 from django.shortcuts import render,HttpResponse
 # Create your views here.
-from .models import City, Leiji, Yiqingv2, Leijiworld, country_name_map, Leijitwomonth,\
-    Provincehistory,Predict
-
+from .models import City, Leiji, Yiqingv2, Leijiworld, country_name_map, Leijitwomonth, \
+    Provincehistory, Predict, Realtimenews
+import time
 
 def hello(request):
     context = {}
@@ -63,4 +63,8 @@ def world(request):
 
 # 实时热点
 def realtime(request):
-    return render(request,'realtime.html')
+    realtimenews = Realtimenews.objects.order_by('-timestamp')[0]
+    for item in realtimenews.data['list']:
+        item['timestamp'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(item['timestamp']/1000))
+
+    return render(request,'realtime.html',{'news':realtimenews})

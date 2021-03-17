@@ -31,6 +31,10 @@ class Provincehistory(mongoengine.Document):
     place = mongoengine.StringField()
     dataList = mongoengine.DictField()
 
+class Realtimenews(mongoengine.Document):
+    timestamp = mongoengine.IntField()
+    data = mongoengine.DictField()
+
 country_name_map = {
     '钻石公主号邮轮': 'Diamond Princess Cruise Ship',
     '安哥拉': 'Angola',
