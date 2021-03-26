@@ -5,11 +5,40 @@ import json
 import ast
 import datetime
 from db import DB
+import random
+import time
+from selenium import webdriver
 
 
 class clawler:
     def __init__(self):
         self.db = DB()
+        self.session = requests.session()
+        self.user_agent_list = [
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:73.0) Gecko/20100101 Firefox/73.0',
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.5 Safari/605.1.15',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36 Edge/16.16299',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:63.0) Gecko/20100101 Firefox/63.0'
+        ]
+        self.rumorurl = "https://vp.fact.qq.com/loadmore?artnum=0&page=%s"
+        self.header = {
+            "user-agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3269.3 Safari/537.36"
+        }
+
+    # 爬取谣言
+    def clawrumors(self):
+        timestamp = int(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
+        df_all = list()
+        for rumorurl in [self.rumorurl % i for i in range(74)]:
+            data_list = requests.get(rumorurl, headers = self.header).json()["content"]  #爬取的数据
+            tempdata = [{'title':df["title"], 'date':df["date"], 'result':df["result"], 'explain':df["explain"], \
+                         'tag':df["tag"],'author':df["author"],'authordesc':df["authordesc"],'abstract':df["abstract"]} for df in data_list]
+            df_all.extend(tempdata)
+        data = {'timestamp': timestamp, 'data': df_all}
+        self.db.insert(collection='rumors', data=data)
+
 
     # 爬取实时播报
     def clawRealtime(self):
@@ -86,3 +115,4 @@ if __name__ == '__main__':
     clawler.clawHistory(place='河北')
     clawler.clawHistory(place='湖北')
     clawler.clawRealtime()
+    clawler.clawrumors()
