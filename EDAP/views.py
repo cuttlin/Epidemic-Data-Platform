@@ -1,8 +1,8 @@
 from django.shortcuts import render,HttpResponse
 # Create your views here.
 from .models import City, Leiji, Yiqingv2, Leijiworld, country_name_map, Leijitwomonth, \
-    Provincehistory, Predict, Realtimenews
-import time
+    Provincehistory, Predict, Realtimenews,Rumors
+import time,json
 
 def hello(request):
     context = {}
@@ -61,6 +61,9 @@ def world(request):
 
     return render(request,'world.html',{'leijiworld':leijiworld})
 
+def worldtrend(request):
+    return render(request,'worldtrend.html')
+
 # 实时热点
 def realtime(request):
     realtimenews = Realtimenews.objects.order_by('-timestamp')[0]
@@ -68,3 +71,30 @@ def realtime(request):
         item['timestamp'] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(item['timestamp']/1000))
 
     return render(request,'realtime.html',{'news':realtimenews})
+
+def rumor(request):
+    rumors = Rumors.objects.order_by('-timestamp')[0]
+    return render(request,'rumor.html',{'rumors':rumors})
+
+def api(request):
+    return render(request,'api.html')
+
+#全球实时数据
+def apiworldnow(request):
+    result = Leijiworld.objects.order_by('-timestamp')[0]['countrydata']['child']
+    return HttpResponse(json.dumps(result), content_type="application/json")
+
+#国内实时数据
+def apinow(request):
+    result = Leijitwomonth.objects.order_by('-timestamp')[0]['dataList'][0]
+    return HttpResponse(json.dumps(result), content_type="application/json")
+
+#国内新闻数据
+def apinews(request):
+    result = Realtimenews.objects.order_by('-timestamp')[0]['data']
+    return HttpResponse(json.dumps(result), content_type="application/json")
+
+#国内谣言数据
+def apirumors(request):
+    result = Rumors.objects.order_by('-timestamp')[0]['data']
+    return HttpResponse(json.dumps(result), content_type="application/json")

@@ -31,7 +31,7 @@ class clawler:
     def clawrumors(self):
         timestamp = int(datetime.datetime.now().strftime('%Y%m%d%H%M%S'))
         df_all = list()
-        for rumorurl in [self.rumorurl % i for i in range(74)]:
+        for rumorurl in [self.rumorurl % i for i in range(80)]:
             data_list = requests.get(rumorurl, headers = self.header).json()["content"]  #爬取的数据
             tempdata = [{'title':df["title"], 'date':df["date"], 'result':df["result"], 'explain':df["explain"], \
                          'tag':df["tag"],'author':df["author"],'authordesc':df["authordesc"],'abstract':df["abstract"]} for df in data_list]
@@ -110,9 +110,11 @@ class clawler:
         self.db.insert(collection='leijiworld',data=data)
 
 if __name__ == '__main__':
+    print(time.time())
     clawler = clawler()
     clawler.run()
     clawler.clawHistory(place='河北')
     clawler.clawHistory(place='湖北')
     clawler.clawRealtime()
     clawler.clawrumors()
+    print(time.time())

@@ -17,6 +17,10 @@ class Leiji(mongoengine.Document):
     dataList = mongoengine.DictField()
     timestamp = mongoengine.IntField()
 
+class Rumors(mongoengine.Document):
+    data = mongoengine.DictField()
+    timestamp = mongoengine.IntField()
+
 class Yiqingv2(mongoengine.Document):
     dataList = mongoengine.DictField()
     timestamp = mongoengine.IntField()
