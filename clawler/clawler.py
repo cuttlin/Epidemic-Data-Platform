@@ -116,5 +116,5 @@ if __name__ == '__main__':
     clawler.clawHistory(place='河北')
     clawler.clawHistory(place='湖北')
     clawler.clawRealtime()
-    clawler.clawrumors()
+    #clawler.clawrumors()
     print(time.time())
